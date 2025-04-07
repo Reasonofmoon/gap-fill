@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수능영어 갭필 시스템</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8f9fa;
+            padding-top: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .header h1 {
+            color: #343a40;
+            font-weight: 700;
+        }
+        .header p {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .btn-primary {
+            background-color: #4263eb;
+            border-color: #4263eb;
+        }
+        .btn-primary:hover {
+            background-color: #3b5bdb;
+            border-color: #3b5bdb;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+        .result-container {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+        .alert {
+            margin-top: 20px;
+        }
+        .features {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        .feature-item {
+            margin-bottom: 20px;
+        }
+        .feature-icon {
+            font-size: 2rem;
+            color: #4263eb;
+            margin-bottom: 10px;
+        }
+        .sample-text {
+            font-size: 0.9rem;
+            color: #6c757d;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>수능영어 갭필 시스템</h1>
+            <p>수능영어 지문을 분석하여 다양한 난이도의 갭필 문제를 생성합니다.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <form id="gapfillForm">
+                    <div class="form-group">
+                        <label for="englishText" class="form-label">수능영어 지문 입력</label>
+                        <textarea class="form-control" id="englishText" rows="10" placeholder="여기에 수능영어 지문을 입력하세요..." required></textarea>
+                    </div>
+                    <div class="text-end mb-3">
+                        <span class="sample-text" id="loadSample">샘플 지문 불러오기</span>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">갭필 문제 생성하기</button>
+                    </div>
+                </form>
+
+                <div class="loading" id="loadingIndicator">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">로딩 중...</span>
+                    </div>
+                    <p class="mt-2">갭필 문제를 생성하는 중입니다. 잠시만 기다려주세요...</p>
+                </div>
+
+                <div class="result-container" id="resultContainer">
+                    <h3 class="mb-3">갭필 문제 생성 완료!</h3>
+                    <p>수능영어 지문에 대한 갭필 문제가 성공적으로 생성되었습니다.</p>
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-success btn-lg" id="downloadBtn">HTML 파일 다운로드</button>
+                    </div>
+                </div>
+
+                <div id="alertContainer"></div>
+            </div>
+        </div>
+
+        <div class="features">
+            <h3 class="mb-4">주요 기능</h3>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-language"></i>
+                        </div>
+                        <h4>다양한 언어적 측면 분석</h4>
+                        <p>어휘-의미-문법-구문적 측면을 모두 고려하여 갭필 문제를 생성합니다.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h4>난이도별 문제 제공</h4>
+                        <p>기초, 중급, 고급, 전문가 단계의 다양한 난이도 문제를 제공합니다.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <h4>HTML 파일 다운로드</h4>
+                        <p>생성된 갭필 문제를 HTML 파일로 다운로드하여 오프라인에서도 활용할 수 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 수능영어 갭필 시스템 | 한국 영어학습자를 위한 맞춤형 학습 도구</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 샘플 지문 불러오기
+            $('#loadSample').click(function() {
+                const sampleText = "Improving your gestural communication involves more than just knowing when to nod or shake hands. It's about using gestures to complement your spoken messages, adding layers of meaning to your words. Open­handed gestures, for example, can indicate honesty, creating an atmosphere of trust. You invite openness and collaboration when you speak with your palms facing up. This simple yet powerful gesture can make others feel more comfortable and willing to engage in conversation. But be careful of the trap of over­gesturing. Too many hand movements can distract from your message, drawing attention away from your words. Imagine a speaker whose hands move quickly like birds, their message lost in the chaos of their gestures. Balance is key. Your gestures should highlight your words, not overshadow them.";
+                $('#englishText').val(sampleText);
+            });
+
+            // 폼 제출 처리
+            $('#gapfillForm').submit(function(e) {
+                e.preventDefault();
+                
+                // 입력 검증
+                const englishText = $('#englishText').val().trim();
+                if (!englishText) {
+                    showAlert('danger', '수능영어 지문을 입력해주세요.');
+                    return;
+                }
+                
+                // 로딩 표시
+                $('#loadingIndicator').show();
+                $('#resultContainer').hide();
+                $('#alertContainer').empty();
+                
+                // AJAX 요청
+                $.ajax({
+                    url: '/generate',
+                    type: 'POST',
+                    data: {
+                        text: englishText
+                    },
+                    success: function(response) {
+                        $('#loadingIndicator').hide();
+                        
+                        if (response.success) {
+                            $('#resultContainer').show();
+                            
+                            // 다운로드 버튼에 파일 경로 저장
+                            $('#downloadBtn').data('file-path', response.html_path);
+                            
+                            showAlert('success', response.message);
+                        } else {
+                            showAlert('danger', response.error || '오류가 발생했습니다.');
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#loadingIndicator').hide();
+                        
+                        let errorMessage = '서버 오류가 발생했습니다.';
+                        if (xhr.responseJSON && xhr.responseJSON.error) {
+                            errorMessage = xhr.responseJSON.error;
+                        }
+                        
+                        showAlert('danger', errorMessage);
+                    }
+                });
+            });
+            
+            // 다운로드 버튼 클릭 처리
+            $('#downloadBtn').click(function() {
+                const filePath = $(this).data('file-path');
+                if (filePath) {
+                    window.location.href = '/download/' + filePath;
+                } else {
+                    showAlert('danger', '다운로드할 파일을 찾을 수 없습니다.');
+                }
+            });
+            
+            // 알림 표시 함수
+            function showAlert(type, message) {
+                const alertHtml = `
+                    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                        ${message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                $('#alertContainer').html(alertHtml);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: gap-fill
+    env: python
+    region: oregon
+    branch: master
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn render_app:app" 
