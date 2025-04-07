@@ -23,9 +23,6 @@ def about():
 
 @app.route('/dashboard')
 def dashboard():
-    if not session.get('logged_in'):
-        flash("Please log in first.")
-        return redirect(url_for('login'))
     return render_template('dashboard.html')
 
 @app.route('/login', methods=['GET', 'POST'])
