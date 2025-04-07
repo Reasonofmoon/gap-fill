@@ -25,24 +25,6 @@ def about():
 def dashboard():
     return render_template('dashboard.html')
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        # Dummy authentication: username=admin, password=admin
-        if username == 'admin' and password == 'admin':
-            session['logged_in'] = True
-            return redirect(url_for('dashboard'))
-        else:
-            flash("Invalid credentials")
-    return render_template('login.html')
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('index'))
-
 @app.route('/api/data')
 def get_data():
     data = {"status": "success", "data": [1, 2, 3, 4, 5]}
